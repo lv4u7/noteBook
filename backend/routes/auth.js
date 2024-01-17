@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import { body, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { fetchuser } from "../middleware/fetchuser.js";
 
 const JWT_SECRET = "mee464";
 // router is an object that will be used to define the available routes
@@ -90,5 +91,20 @@ router.post(
       res.status(500).send("an error occured");
     }
   })
+
+
+  // endpoint get a users' details : POST "/api/auth/getuser"
+  //we need the authToken and using it we try to fetch the notes
+  router.post("/getuser",fetchuser, async (req,res)=>{
+  try {
+    const userID = req.user.id;
+    //we select all fields except the password -password
+    const user = await User.findById(userID).select("-password");
+    res.status(200).send(user);
+  } catch (error) {
+    console.error(error.message);
+      res.status(500).send("an error occured");
+  }
+})
 
 export default router;
