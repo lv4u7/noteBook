@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const mongoURI = "mongodb://localhost:27017";
+const mongoURI = "mongodb://localhost:27017/noteBook";
 
 const connect = async () => {
   try {

@@ -24,6 +24,6 @@ const UserSchema = new Schema({
 
 //here we are creating a model from the Schema named "user" and passing the schema to it and then exporting it
 const User = mongoose.model("user", UserSchema);
-
+User.createIndexes();
 export default User;
 // we will use it in our routes to create a new user

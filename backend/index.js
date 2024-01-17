@@ -7,7 +7,7 @@ import noteRouter from "./routes/notes.js";
 connect();
 // app is an instance of express which is a function that returns an object used to configure and start up the server
 const app = express();
-const port = 3000;
+const port = 5000;
 app.use(express.json());
 
 app.get("/", (req, res) => {
