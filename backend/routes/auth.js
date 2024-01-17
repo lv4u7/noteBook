@@ -12,7 +12,7 @@ const router = Router();
 router.post(
   "/createuser",
   [
-    body("name", "Enter a valid name").isLength({ min: 3 }),
+    body("name", "Enter a valid name").isLength({ min: 5 }),
     body("email", "Enter a valid email").isEmail(),
     body("password", "Password must be at least 5").isLength({ min: 5 }),
   ],
@@ -50,5 +50,45 @@ router.post(
     }
   }
 );
+
+// endpoint Auth a user: POST "/api/auth/login"
+router.post(
+  "/login",
+  [
+    body("email", "Enter a valid email").isEmail(),
+    body("password", "Password cant be blank").exists(),
+  ],
+  async (req, res) => {
+    const result = validationResult(req);
+    //400 bad request with errors
+    if (!result.isEmpty()) {
+      return res.status(400).json({ errors: result.array() });
+    }
+    
+    const {email,password} = req.body;
+    try {
+      let user = await User.findOne({email});
+      if(!user) {
+        return res.status(400).json({msg:"Invalid...!"});
+      }
+      const isMatch = await bcrypt.compare(password, user.password);
+      if(!isMatch){
+        return res.status(400).json({msg:"Invalid...!"});
+      }
+
+      const data = {
+        user :{
+          id:user.id,
+        }
+      }
+
+      const authToken = jwt.sign(data,JWT_SECRET);
+      res.json({authToken});
+
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send("an error occured");
+    }
+  })
 
 export default router;
