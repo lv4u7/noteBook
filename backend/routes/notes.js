@@ -5,7 +5,6 @@ import { body, validationResult } from "express-validator";
 
 // router is an object that will be used to define the available routes
 const router = Router();
-
 //Get all notes: GET"/api/notes/getallnotes 'login req'
 router.get("/fetchallnotes", fetchuser, async (req, res) => {
   try {
@@ -18,11 +17,16 @@ router.get("/fetchallnotes", fetchuser, async (req, res) => {
 });
 
 //add new note: POST"/api/notes/addnote 'login req'
-router.post("/addnote", fetchuser,
+router.post(
+  "/addnote",
+  fetchuser,
   [
     body("title", "Enter a valid title").isLength({ min: 3 }),
-    body("description", "Description must be at least 5 characters").isLength({ min: 5 }),
-  ], async (req, res) => {
+    body("description", "Description must be at least 5 characters").isLength({
+      min: 5,
+    }),
+  ],
+  async (req, res) => {
     try {
       const { title, description, tag } = req.body;
       const result = validationResult(req);
@@ -31,7 +35,10 @@ router.post("/addnote", fetchuser,
         return res.status(400).json({ errors: result.array() });
       }
       const newNote = new Note({
-        user: req.user.id, title, description, tag,
+        user: req.user.id,
+        title,
+        description,
+        tag,
       });
       const note = await newNote.save();
       res.json(note);
@@ -39,14 +46,15 @@ router.post("/addnote", fetchuser,
       console.error(error.message);
       res.status(500).send("an error occured");
     }
-  });
+  }
+);
 
 //update existing notes PUT:/api/notes/updatenote 'login req'
 router.put("/updatenote/:id", fetchuser, async (req, res) => {
- 
-    const { title, description, tag } = req.body;
-    //create new Note 
-    const newNote = {}
+  const { title, description, tag } = req.body;
+  try {
+    //create new Note
+    const newNote = {};
     if (title) {
       newNote.title = title;
     }
@@ -59,17 +67,47 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
     // note ko search kr k update krni hy
     let note = await Note.findById(req.params.id);
     if (!note) {
-      return res.status(404).send("! found" );
+      return res.status(404).send("! found");
     }
     //checking the owner of the note
     if (note.user.toString() !== req.user.id) {
-      return res.status(401).send("! Allowed")
+      return res.status(401).send("! Allowed");
     }
 
-    note = await Note.findByIdAndUpdate(req.params.id, {$set: newNote}, {new:true})
+    note = await Note.findByIdAndUpdate(
+      req.params.id,
+      { $set: newNote },
+      { new: true }
+    );
     //this line is mongoose function(id of the note to update, using set operator update the field using newNote values, {new:true} ensures that it returns the modified document)
     res.json(note);
-  
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("an error occured");
+  }
+});
+
+// delete note DELETE:/api/notes/deletenote 'login req'
+router.delete("/deletnote/:id", fetchuser, async (req, res) => {
+  try {
+    // note ko search kr k delete krni hy
+    let note = await Note.findById(req.params.id);
+    if (!note) {
+      return res.status(404).send("! found");
+    }
+    //verify that the user is the owner of the note
+
+    if (note.user.toString() !== req.user.id) {
+      return res.status(401).send("! Allowed");
+    }
+
+    note = await Note.findByIdAndDelete(req.params.id);
+    //this line is mongoose ftn to delete the note using id
+    res.json({ Del: "Note has been deleted", note: note });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("an error occured");
+  }
 });
 
 export default router;
