@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
 const NoteSchema = new Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+  },
   title: {
     type: String,
     required: true,
@@ -17,7 +21,7 @@ const NoteSchema = new Schema({
   },
   date: {
     type: Date,
-    dafault: Date.now, // we dont call the function here, just pass it , it will called when a document will be inserted in the database
+    default: Date.now // we dont call the function here, just pass it , it will called when a document will be inserted in the database
   },
 });
 

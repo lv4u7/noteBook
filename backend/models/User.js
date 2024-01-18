@@ -18,7 +18,7 @@ const UserSchema = new Schema({
   },
   date: {
     type: Date,
-    dafault: Date.now, // we dont call the function here, just pass it , it will called when a document will be inserted in the database
+    default: Date.now, // we dont call the function here, just pass it , it will called when a document will be inserted in the database
   },
 });
 
