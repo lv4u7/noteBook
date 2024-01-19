@@ -19,5 +19,5 @@ app.use("/api/auth", authRouter);
 app.use("/api/notes", noteRouter);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Note Book  listening on port ${port}`);
 });

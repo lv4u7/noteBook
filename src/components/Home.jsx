@@ -1,5 +1,7 @@
 import React from "react";
 
+import Notes from "./Notes";
+
 const Home = () => {
   return (
     <>
@@ -30,17 +32,8 @@ const Home = () => {
         </form>
       </div>
       <div className="container my-3">
-        <h2>Your Note</h2>
-        <div className="row my-3">
-          <div className="col-md-3">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Note Title</h5>
-                <p className="card-text">Note Description</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <h2>Your Notes</h2>
+        <Notes />
       </div>
     </>
   );
