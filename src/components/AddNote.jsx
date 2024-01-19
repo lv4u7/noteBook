@@ -18,50 +18,58 @@ export const AddNote = () => {
     setNote({ ...note, [e.target.name]: e.target.value });
   };
   return (
-    <div className="container my-3">
-      <h2>Add new note</h2>
-      <form className="my-3">
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">
-            Title
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="title"
-            name="title"
-            onChange={onChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="description" className="form-label">
-            Description
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="description"
-            name="description"
-            onChange={onChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="tags" className="form-label">
-            tags
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="tags"
-            name="tag"
-            onChange={onChange}
-          />
-        </div>
-        <button type="submit" className="btn btn-success" onClick={handleClick}>
-          Add note
-        </button>
-      </form>
+    <div className="container my-5">
+  <h2 className="mb-4">Add new note</h2>
+  <form className="my-3">
+    <div className="mb-3">
+      <label htmlFor="title" className="form-label">
+        Title
+      </label>
+      <input
+        type="text"
+        className="form-control"
+        id="title"
+        name="title"
+        onChange={onChange}
+        placeholder="Enter title"
+      />
     </div>
+    <div className="mb-3">
+      <label htmlFor="description" className="form-label">
+        Description
+      </label>
+      <input
+        type="text"
+        className="form-control"
+        id="description"
+        name="description"
+        onChange={onChange}
+        placeholder="Enter description"
+      />
+    </div>
+    <div className="mb-3">
+      <label htmlFor="tags" className="form-label">
+        Tags
+      </label>
+      <input
+        type="text"
+        className="form-control"
+        id="tags"
+        name="tag"
+        onChange={onChange}
+        placeholder="Enter tags"
+      />
+    </div>
+    <button
+      type="submit"
+      className="btn btn-success"
+      onClick={handleClick}
+    >
+      <span>Add note</span>
+    </button>
+  </form>
+</div>
+
   );
 };
 
