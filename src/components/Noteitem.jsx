@@ -5,7 +5,7 @@ import css from "../styles/Noteitem.module.css";
 import { useContext } from "react";
 import NoteContext from "../context/notes/NoteContext";
 
-export const Noteitem = ({ note }) => {
+export const Noteitem = ({ note, updateNote }) => {
   const context = useContext(NoteContext);
   const { deleteNote } = context;
   const handleClick = () => {
@@ -21,7 +21,10 @@ export const Noteitem = ({ note }) => {
               className={`me-2 ${css.mouse}`}
               onClick={handleClick}
             />
-            <CiEdit className={`me-2 ${css.mouse}`} />
+            <CiEdit
+              className={`me-2 ${css.mouse}`}
+              onClick={() => updateNote(note)}
+            />
           </div>
           <p className="card-text">{note.description}</p>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useContext } from "react";
 import NoteContext from "../context/notes/NoteContext";
 
@@ -10,9 +10,15 @@ export const AddNote = () => {
     description: "",
     tag: "default",
   });
+  const tref = useRef(null);
+  const dref = useRef(null);
+  const ref = useRef(null);
   const handleClick = (e) => {
     e.preventDefault();
     addNote(note.title, note.description, note.tag);
+    ref.current.value = "";
+    tref.current.value = "";
+    dref.current.value = "";
   };
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
@@ -32,6 +38,8 @@ export const AddNote = () => {
             name="title"
             onChange={onChange}
             placeholder="Enter title"
+            minLength={3}
+            ref={tref}
           />
         </div>
         <div className="mb-3">
@@ -45,6 +53,8 @@ export const AddNote = () => {
             name="description"
             onChange={onChange}
             placeholder="Enter description"
+            minLength={5}
+            ref={dref}
           />
         </div>
         <div className="mb-3">
@@ -58,9 +68,17 @@ export const AddNote = () => {
             name="tag"
             onChange={onChange}
             placeholder="Enter tags"
+            ref={ref}
           />
         </div>
-        <button type="submit" className="btn btn-success" onClick={handleClick}>
+        <button
+          type="submit"
+          className="btn btn-success"
+          onClick={handleClick}
+          disabled={
+            note.title.trim().length < 3 || note.description.trim().length < 5
+          }
+        >
           <span>Add note</span>
         </button>
       </form>
