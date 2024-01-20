@@ -2,11 +2,14 @@ import React from "react";
 
 export const Alert = ({ msg }) => {
   return (
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div
+      className="alert alert-warning alert-dismissible fade show"
+      role="alert"
+    >
       <strong>{msg}</strong>
       <button
         type="button"
-        class="btn-close"
+        className="btn-close"
         data-bs-dismiss="alert"
         aria-label="Close"
       ></button>
