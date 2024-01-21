@@ -1,14 +1,22 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 import { useContext } from "react";
 import NoteContext from "../context/notes/NoteContext";
 import Noteitem from "./Noteitem";
 import AddNote from "./AddNote";
+import { useNavigate } from "react-router-dom";
 
-export const Notes = () => {
+export const Notes = ({ showAlert }) => {
   const context = useContext(NoteContext);
   const { notes, getAllNotes, editNote } = context;
+  let history = useNavigate();
   useEffect(() => {
-    getAllNotes();
+    if (localStorage.getItem("token")) {
+      getAllNotes();
+    } else {
+      showAlert("You are not logged in", "danger");
+      history("/login");
+    }
     // eslint-disable-next-line
   }, []);
   const ref = useRef(null);
@@ -31,6 +39,7 @@ export const Notes = () => {
     e.preventDefault();
     editNote(note.id, note.etitle, note.edescription, note.etag);
     refClose.current.click();
+    showAlert("Updated successfully", "success");
     // addNote(note.title, note.description, note.tag);
   };
   const onChange = (e) => {
@@ -38,7 +47,7 @@ export const Notes = () => {
   };
   return (
     <>
-      <AddNote />
+      <AddNote showAlert={showAlert} />
 
       <button
         type="button"
@@ -151,7 +160,12 @@ export const Notes = () => {
         </div>
         {notes.map((note) => {
           return (
-            <Noteitem key={note._id} note={note} updateNote={updateNote} />
+            <Noteitem
+              key={note._id}
+              note={note}
+              updateNote={updateNote}
+              showAlert={showAlert}
+            />
           );
         })}
       </div>

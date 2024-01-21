@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-export const Login = () => {
+
+export const Login = (props) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const history = useNavigate();
   //   const host = "http://localhost:5000";
@@ -23,9 +25,10 @@ export const Login = () => {
     if (jsn.success) {
       //save the auth token and redirect
       localStorage.setItem("token", jsn.authToken);
+      props.showAlert("Logged in successfully", "success");
       history("/");
     } else {
-      alert("Invalid credentials");
+      props.showAlert("Invalid credentials", "danger");
     }
   };
   const onChange = (e) => {
@@ -34,6 +37,7 @@ export const Login = () => {
 
   return (
     <div className="container">
+      <h2 className="my-3">Login to continue</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
@@ -63,7 +67,7 @@ export const Login = () => {
             value={credentials.password}
             onChange={onChange}
           />
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary my-4">
             Submit
           </button>
         </div>

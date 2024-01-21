@@ -1,8 +1,9 @@
-import React, { useRef, useState } from "react";
+/* eslint-disable react/prop-types */
+import { useRef, useState } from "react";
 import { useContext } from "react";
 import NoteContext from "../context/notes/NoteContext";
 
-export const AddNote = () => {
+export const AddNote = ({ showAlert }) => {
   const context = useContext(NoteContext);
   const { addNote } = context;
   const [note, setNote] = useState({
@@ -19,6 +20,7 @@ export const AddNote = () => {
     ref.current.value = "";
     tref.current.value = "";
     dref.current.value = "";
+    showAlert("Added successfully", "success");
   };
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });

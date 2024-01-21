@@ -1,15 +1,16 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { CiEdit } from "react-icons/ci";
 import css from "../styles/Noteitem.module.css";
 import { useContext } from "react";
 import NoteContext from "../context/notes/NoteContext";
 
-export const Noteitem = ({ note, updateNote }) => {
+export const Noteitem = ({ note, updateNote, showAlert }) => {
   const context = useContext(NoteContext);
   const { deleteNote } = context;
   const handleClick = () => {
     deleteNote(note._id);
+    showAlert("Deleted successfully", "success");
   };
   return (
     <>
@@ -23,7 +24,9 @@ export const Noteitem = ({ note, updateNote }) => {
             />
             <CiEdit
               className={`me-2 ${css.mouse}`}
-              onClick={() => updateNote(note)}
+              onClick={() => {
+                updateNote(note);
+              }}
             />
           </div>
           <p className="card-text">{note.description}</p>

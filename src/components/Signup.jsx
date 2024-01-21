@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-export const Signup = () => {
+export const Signup = (props) => {
   const history = useNavigate();
   const [credentials, setCredentials] = useState({
     name: "",
@@ -31,15 +32,17 @@ export const Signup = () => {
       //save the auth token and redirect
       localStorage.setItem("token", jsn.authToken);
       history("/");
+      props.showAlert("Account created successfully", "success");
     } else {
-      alert("Invalid credentials");
+      props.showAlert("Invalid credentials", "danger");
     }
   };
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
   return (
-    <div className="container">
+    <div className="container my-2">
+      <h2 className="my-3">Sign up to continue</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
