@@ -18,16 +18,21 @@ router.post(
     body("password", "Password must be at least 5").isLength({ min: 5 }),
   ],
   async (req, res) => {
+    let success;
     const result = validationResult(req);
     //400 bad request with errors
     if (!result.isEmpty()) {
-      return res.status(400).json({ errors: result.array() });
+      success = false;
+      return res.status(400).json({ success, errors: result.array() });
     }
     try {
       //check if the user with this email already exists
       let user = await User.findOne({ email: req.body.email });
       if (user) {
-        return res.status(400).json({ error: "user with same email exists" });
+        success = false;
+        return res
+          .status(400)
+          .json({ success, error: "user with same email exists" });
       }
       //salt ko password k sath add kr k hash kren gy
       const salt = await bcrypt.genSalt(10);
@@ -42,9 +47,9 @@ router.post(
         user: { id: user.id },
       };
       const authToken = jwt.sign(data, JWT_SECRET);
-      console.log(authToken);
 
-      res.status(200).json({ authToken });
+      success = true;
+      res.status(200).json({ success, authToken });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("an error occured");
@@ -61,41 +66,44 @@ router.post(
   ],
   async (req, res) => {
     const result = validationResult(req);
+    let success;
     //400 bad request with errors
     if (!result.isEmpty()) {
-      return res.status(400).json({ errors: result.array() });
+      success = false;
+      return res.status(400).json({ success, errors: result.array() });
     }
-    
-    const {email,password} = req.body;
+
+    const { email, password } = req.body;
     try {
-      let user = await User.findOne({email});
-      if(!user) {
-        return res.status(400).json({msg:"Invalid...!"});
+      let user = await User.findOne({ email });
+      if (!user) {
+        return res.status(400).json({ msg: "Invalid...!" });
       }
       const isMatch = await bcrypt.compare(password, user.password);
-      if(!isMatch){
-        return res.status(400).json({msg:"Invalid...!"});
+      if (!isMatch) {
+        success = false;
+        return res.status(400).json({ success, msg: "Invalid...!" });
       }
 
       const data = {
-        user :{
-          id:user.id,
-        }
-      }
+        user: {
+          id: user.id,
+        },
+      };
 
-      const authToken = jwt.sign(data,JWT_SECRET);
-      res.json({authToken});
-
+      const authToken = jwt.sign(data, JWT_SECRET);
+      success = true;
+      res.json({ success, authToken });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("an error occured");
     }
-  })
+  }
+);
 
-
-  // endpoint get a users' details : POST "/api/auth/getuser"
-  //we need the authToken and using it we try to fetch the notes
-  router.post("/getuser",fetchuser, async (req,res)=>{
+// endpoint get a users' details : POST "/api/auth/getuser"
+//we need the authToken and using it we try to fetch the notes
+router.post("/getuser", fetchuser, async (req, res) => {
   try {
     const userID = req.user.id;
     //we select all fields except the password -password
@@ -103,8 +111,8 @@ router.post(
     res.status(200).send(user);
   } catch (error) {
     console.error(error.message);
-      res.status(500).send("an error occured");
+    res.status(500).send("an error occured");
   }
-})
+});
 
 export default router;

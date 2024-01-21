@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import NoteContext from "./NoteContext";
+import PropTypes from "prop-types";
+
 const NoteState = (props) => {
   const host = "http://localhost:5000";
   const notesInitial = [];
@@ -93,5 +95,7 @@ const NoteState = (props) => {
     </NoteContext.Provider>
   );
 };
-
+NoteState.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 export default NoteState;

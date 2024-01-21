@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useLocation } from "react-router-dom";
 const Navbar = () => {
   const location = useLocation();
@@ -45,7 +44,7 @@ const Navbar = () => {
               </li>
             </ul>
             <form className="d-flex" role="search">
-              <input
+              {/* <input
                 className="form-control me-2"
                 type="search"
                 placeholder="Search"
@@ -53,7 +52,13 @@ const Navbar = () => {
               />
               <button className="btn btn-outline-success" type="submit">
                 Search
-              </button>
+              </button> */}
+              <Link className="btn btn-outline-primary mx-2" to="/login">
+                Login
+              </Link>
+              <Link className="btn btn-outline-primary mx-2" to="/signup">
+                Sign up
+              </Link>
             </form>
           </div>
         </div>
