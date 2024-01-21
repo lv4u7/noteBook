@@ -11,7 +11,6 @@ router.get("/fetchallnotes", fetchuser, async (req, res) => {
     const notes = await Note.find({ user: req.user.id });
     res.json(notes);
   } catch (error) {
-    console.error(error.message);
     res.status(500).send("an error occured");
   }
 });
@@ -43,7 +42,6 @@ router.post(
       const note = await newNote.save();
       res.json(note);
     } catch (error) {
-      console.error(error.message);
       res.status(500).send("an error occured");
     }
   }
@@ -82,7 +80,6 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
     //this line is mongoose function(id of the note to update, using set operator update the field using newNote values, {new:true} ensures that it returns the modified document)
     res.json(note);
   } catch (error) {
-    console.error(error.message);
     res.status(500).send("an error occured");
   }
 });
@@ -105,7 +102,6 @@ router.delete("/deletnote/:id", fetchuser, async (req, res) => {
     //this line is mongoose ftn to delete the note using id
     res.json({ Del: "Note has been deleted", note: note });
   } catch (error) {
-    console.error(error.message);
     res.status(500).send("an error occured");
   }
 });

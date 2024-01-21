@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 export const Login = (props) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const host = "http://localhost:5000";
   const history = useNavigate();
   //   const host = "http://localhost:5000";
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(credentials);
-    const response = await fetch(`http://localhost:5000/api/auth/login`, {
+    const response = await fetch(`${host}/api/auth/login`, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       headers: {
         "Content-Type": "application/json",
@@ -21,10 +21,10 @@ export const Login = (props) => {
       }),
     });
     const jsn = await response.json(); // parses JSON response into native JavaScript objects
-    console.log(jsn);
     if (jsn.success) {
       //save the auth token and redirect
       localStorage.setItem("token", jsn.authToken);
+      localStorage.setItem("mail", credentials.email);
       props.showAlert("Logged in successfully", "success");
       history("/");
     } else {

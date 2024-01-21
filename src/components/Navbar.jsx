@@ -1,9 +1,12 @@
+/* eslint-disable react/prop-types */
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-const Navbar = () => {
+const Navbar = ({ showAlert }) => {
   let history = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("mail");
+    showAlert("Logged out successfully", "success");
     history("/login");
   };
   const location = useLocation();
@@ -51,15 +54,6 @@ const Navbar = () => {
             </ul>
             {!localStorage.getItem("token") ? (
               <form className="d-flex" role="search">
-                {/* <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button> */}
                 <Link className="btn btn-outline-primary mx-2" to="/login">
                   Login
                 </Link>
@@ -68,9 +62,17 @@ const Navbar = () => {
                 </Link>
               </form>
             ) : (
-              <button className="btn btn-primary" onClick={handleLogout}>
-                Log out
-              </button>
+              <div className="d-flex navb">
+                <span className="mailbar">{`Welcome ${localStorage.getItem(
+                  "mail"
+                )}`}</span>
+                <button
+                  className="btn btn-outline-primary mx-2 logout"
+                  onClick={handleLogout}
+                >
+                  Log out
+                </button>
+              </div>
             )}
           </div>
         </div>

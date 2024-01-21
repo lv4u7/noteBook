@@ -13,7 +13,7 @@ const router = Router();
 router.post(
   "/createuser",
   [
-    body("name", "Enter a valid name").isLength({ min: 5 }),
+    body("name", "Enter a valid name").isLength({ min: 3 }),
     body("email", "Enter a valid email").isEmail(),
     body("password", "Password must be at least 5").isLength({ min: 5 }),
   ],
@@ -51,7 +51,6 @@ router.post(
       success = true;
       res.status(200).json({ success, authToken });
     } catch (error) {
-      console.error(error.message);
       res.status(500).send("an error occured");
     }
   }
@@ -95,7 +94,6 @@ router.post(
       success = true;
       res.json({ success, authToken });
     } catch (error) {
-      console.error(error.message);
       res.status(500).send("an error occured");
     }
   }
@@ -110,7 +108,6 @@ router.post("/getuser", fetchuser, async (req, res) => {
     const user = await User.findById(userID).select("-password");
     res.status(200).send(user);
   } catch (error) {
-    console.error(error.message);
     res.status(500).send("an error occured");
   }
 });

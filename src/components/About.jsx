@@ -39,7 +39,7 @@ const About = () => {
         <p>
           Follow us on{" "}
           <a
-            href="https://twitter.com"
+            href="https://twitter.com/"
             target="_blank"
             rel="noopener noreferrer"
           >
