@@ -65,7 +65,7 @@ const NoteState = (props) => {
       method: "PUT", // *GET, POST, PUT, DELETE, etc.
       headers: {
         "Content-Type": "application/json",
-        "x-auth-token": localStorage,
+        "x-auth-token": localStorage.getItem("token"),
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: JSON.stringify({ title, description, tag }), // body data type must ma tch "Content-Type" header
